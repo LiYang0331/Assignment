@@ -1,2 +1,0 @@
-# Assignment
-Online Book System
