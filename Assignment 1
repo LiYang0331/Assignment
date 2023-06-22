@@ -1,0 +1,98 @@
+package onlinebookstore;
+import java.util.Scanner;
+
+class Book {
+    private String title;
+    private String author;
+    private double price;
+    private int quantity;
+
+    public Book(String title, String author, double price, int quantity) {
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.quantity = quantity;
+    }
+}
+
+class EBook extends Book {
+    private String fileFormat;
+
+    public EBook(String title, String author, double price, int quantity, String fileFormat) {
+        super(title, author, price, quantity);
+        this.fileFormat = fileFormat;
+    }
+
+    public void openBook() {
+        System.out.println("The book is opened. You can start reading.");
+    }
+
+    public void downloadBook() {
+        System.out.println("The book has downloading.");
+    }
+
+    public boolean validateFormat() {
+        return fileFormat.equals(".pdf") || fileFormat.equals(".word");
+    }
+}
+
+class PhysicalBook extends Book {
+    private double weight;
+
+    public PhysicalBook(String title, String author, double price, int quantity, double weight) {
+        super(title, author, price, quantity);
+        this.weight = weight;
+    }
+
+    public double calculateShippingCost() {
+        double initialCost = 4.50;
+        double additionalCharge = 1.00;
+        double baseWeight = 500.0;
+        double additionalWeight = weight - baseWeight;
+
+        if (additionalWeight <= 0) {
+            return initialCost;
+        } else {
+            int extraChargeCount = (int) Math.ceil(additionalWeight / 250.0);
+            return initialCost + (extraChargeCount * additionalCharge);
+        }
+    }
+
+    public double getWeightInPounds() {
+        return weight / 453.59237;
+    }
+}
+
+public class OnlineBookStore {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        
+        System.out.println("Please choose the services that you need:");
+        System.out.println();
+        System.out.println("1.E-Book       2.Physical Book ");
+        int number = input.nextInt();
+        
+        if( number == 1){
+            System.out.println();
+            EBook eBook = new EBook("The Great Gatsby", "F. Scott Fitzgerald", 9.99, 1, ".pdf");
+            System.out.println();
+            System.out.println("You just see our book on online or download it");
+            System.out.println("1.Open Book       2.Download Book");
+            int abc = input.nextInt();
+            if(abc==1){
+                eBook.openBook();
+            }
+            else{
+                eBook.downloadBook();
+            }
+            System.out.println("Valid Format: " + eBook.validateFormat());
+        }
+        else{
+            System.out.println();
+            PhysicalBook physicalBook = new PhysicalBook("To Kill a Mockingbird", "Harper Lee", 14.99, 5, 750.0);
+            double shippingCost = physicalBook.calculateShippingCost();
+            System.out.println("Shipping Cost: $" + shippingCost);
+            System.out.println("Weight in Pounds: " + physicalBook.getWeightInPounds());
+        }
+    }
+}
