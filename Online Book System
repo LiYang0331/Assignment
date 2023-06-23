@@ -1,0 +1,155 @@
+import java.util.Scanner;
+
+class Book {
+    private String title;
+    private String author;
+    private double price;
+    private int quantity;
+    
+    public Book(String title, String author, double price, int quantity) {
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.quantity = quantity;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+    
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+}
+
+class EBook extends Book {
+    private String fileFormat;
+    
+    public EBook(String title, String author, double price, int quantity, String fileFormat) {
+        super(title, author, price, quantity);
+        this.fileFormat = fileFormat;
+    }
+    
+    public String getFileFormat() {
+        return fileFormat;
+    }
+    
+    public void setFileFormat(String fileFormat) {
+        this.fileFormat = fileFormat;
+    }
+    
+    public void openBook() {
+        System.out.println("The book is opened. You may start reading.");
+    }
+    
+    public void downloadBook() {
+        System.out.println("The book has begun downloading.");
+    }
+    
+    public boolean validateFormat() {
+        return fileFormat.equals(".pdf") || fileFormat.equals(".epub");
+    }
+}
+
+class PhysicalBook extends Book {
+    private double weight;
+    
+    public PhysicalBook(String title, String author, double price, int quantity, double weight) {
+        super(title, author, price, quantity);
+        this.weight = weight;
+    }
+    
+    public double getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+    
+    public double calculateShippingCost() {
+        double initialWeight = 500.0; // in grams
+        double extraCharge = 1.0; // for each additional 250g
+        double shippingCost = 4.50;
+        
+        if (weight > initialWeight) {
+            double additionalWeight = weight - initialWeight;
+            int additionalChargeUnits = (int) Math.ceil(additionalWeight / 250);
+            shippingCost += additionalChargeUnits * extraCharge;
+        }
+        
+        return shippingCost;
+    }
+    
+    public double getWeightInPounds() {
+        double poundsConversionFactor = 0.00220462; // 1 gram = 0.00220462 pounds
+        return weight * poundsConversionFactor;
+    }
+}
+
+public class OnlineBookStore {
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        
+        System.out.println("Please choose the services that you need:");
+        System.out.println();
+        System.out.println("1.E-Book       2.Physical Book ");
+        int number = input.nextInt();
+        
+        if( number == 1){
+            System.out.println();
+            EBook ebook = new EBook("The Lord of the Rings", "J. R. R. Tolkien", 10, 4, ".pdf");
+            System.out.println("EBook Title: " + ebook.getTitle());
+            System.out.println("EBook Author: " + ebook.getAuthor());
+            System.out.println("EBook Price: RM" + ebook.getPrice());
+            System.out.println("EBook Quantity: " + ebook.getQuantity());
+            System.out.println("EBook File Format: " + ebook.getFileFormat());
+            System.out.println();
+            System.out.println("You just see our book on online or download it");
+            System.out.println("1.Open Book       2.Download Book");
+            int abc = input.nextInt();
+            if(abc==1){
+                ebook.openBook();
+            }
+            else{
+                ebook.downloadBook();
+            }
+        }
+        else{
+            System.out.println();
+            PhysicalBook physicalBook = new PhysicalBook("The Catcher in the Rye", "J. D. Salinger", 40, 1, 1000);
+            System.out.println("Physical Book Title: " + physicalBook.getTitle());
+            System.out.println("Physical Book Author: " + physicalBook.getAuthor());
+            System.out.println("Physical Book Price: RM" + physicalBook.getPrice());
+            System.out.println("Physical Book Quantity: " + physicalBook.getQuantity());
+            System.out.println("Physical Book Weight: " + physicalBook.getWeight() + "g");
+            System.out.println("Shipping Cost: RM" + physicalBook.calculateShippingCost());
+            System.out.println("Weight in pounds: " + physicalBook.getWeightInPounds());
+        }
+    }
+}
