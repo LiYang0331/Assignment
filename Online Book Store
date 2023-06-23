@@ -92,8 +92,8 @@ class PhysicalBook extends Book {
     }
     
     public double calculateShippingCost() {
-        double initialWeight = 500.0; // in grams
-        double extraCharge = 1.0; // for each additional 250g
+        double initialWeight = 500.0;
+        double extraCharge = 1.0;
         double shippingCost = 4.50;
         
         if (weight > initialWeight) {
